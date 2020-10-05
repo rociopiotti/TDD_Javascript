@@ -6,8 +6,16 @@ import IndexController from "../controllers/indexController";
 describe("Helpers", () => {
   // teastea el método getYear
   describe("Test getYear function", () => {
-    const year = getYear();
-    const myYear = new Date().getFullYear();
+    let year, myYear;
+    before(() => {
+      console.log("Cargando valores");
+      year = getYear();
+      myYear = new Date().getFullYear();
+    });
+    after(()=>{
+      console.log("Ejecutando after");
+
+    })
     it("Devuelve un número", () => {
       expect(year).to.be.a("number");
     });

@@ -3,6 +3,8 @@ import { expect } from "chai";
 import chaiHttp from "chai-http";
 import app from "../app";
 import { getData } from "../controllers/indexController";
+import { deleteItem } from "../controllers/deleteController";
+
 
 chai.use(chaiHttp);
 
@@ -37,9 +39,35 @@ describe("Http Index", () => {
           done();
         });
     });
+  });
+});
+
+describe("Http Index", () => {
+  describe("Control de los datos del array", () => {
+    let lastId; 
+    beforeEach((done) => {
+      chai
+        .request(app)
+        .post("/new")
+        .send({
+          subject: "Registro para test",
+          description: "Esta es la descripcion",
+        })
+        .end((err, res) => {
+          done();
+        });
+    });
+    afterEach((done)=>{
+      deleteItem(lastId)
+      .then(()=>{
+        done();
+      })
+    })
     it("Debe recibirse un array con los ToDos", (done) => {
       getData().then((data) => {
         expect(data).not.to.be.empty;
+        lastId = data[data.length-1].id
+        
         done();
       });
     });
